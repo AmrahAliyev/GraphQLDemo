@@ -8,4 +8,5 @@ public interface IContractRepository
     Task<Contract> GetContractById(Guid id);
     Task<IEnumerable<Contract>> GetContractByUserId(Guid id);
     Task<IEnumerable<Contract>> GetContracts();
+    Task<IEnumerable<Contract>> GetManyByIds(IReadOnlyList<Guid> userIdKeys);
 }

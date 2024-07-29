@@ -8,22 +8,22 @@ using Microsoft.EntityFrameworkCore;
 // DataLoader
 public class ContractByUserDataLoader : BatchDataLoader<Guid, List<Contract>>
 {
-    private readonly IDbContextFactory<AppDbContext> _dbContextFactory;
+    private readonly IContractRepository _contractRepository;
 
-    public ContractByUserDataLoader(IBatchScheduler batchScheduler, IDbContextFactory<AppDbContext> dbContextFactory)
+    public ContractByUserDataLoader(IBatchScheduler batchScheduler,
+    IContractRepository contractRepository,
+    IDbContextFactory<AppDbContext> dbContextFactory)
         : base(batchScheduler)
     {
-        _dbContextFactory = dbContextFactory;
+        _contractRepository = contractRepository;
     }
 
     protected override async Task<IReadOnlyDictionary<Guid, List<Contract>>> LoadBatchAsync(IReadOnlyList<Guid> keys, CancellationToken cancellationToken)
     {
-        await using var dbContext = _dbContextFactory.CreateDbContext();
-        var contracts = await dbContext.Contracts
-            .Where(c => keys.Contains(c.UserId))
-            .ToListAsync(cancellationToken);
+        IEnumerable<Contract> contracts = await _contractRepository.GetManyByIds(keys);
 
-        return contracts.GroupBy(c => c.UserId)
-                        .ToDictionary(g => g.Key, g => g.ToList());
+        return contracts
+        .GroupBy(x => x.UserId)
+        .ToDictionary(g => g.Key, g => g.ToList());
     }
 }

@@ -46,4 +46,10 @@ public class ContractRepository : IContractRepository
         // return data;
         return await dbContext.Contracts.ToListAsync();
     }
+
+    public async Task<IEnumerable<Contract>> GetManyByIds(IReadOnlyList<Guid> userIdKeys)
+    {
+        using var dbContext = _dbContextFactory.CreateDbContext();
+        return await dbContext.Contracts.Where(x => userIdKeys.Contains(x.UserId)).ToListAsync();
+    }
 }
