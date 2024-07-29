@@ -3,28 +3,36 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GraphQLDemo.Api.Model.DTOs;
-using GraphQLDemo.Api.Services;
-using GraphQLDemo.Api.Services.Interfaces;
+using GraphQLDemo.Api.Model.Entities;
+using GraphQLDemo.Api.Repositories.Interfaces;
 
 namespace GraphQLDemo.Api.Schema.Queries
 {
     public class UserQuery
     {
-        private readonly IUserService _userService;
+        private readonly IUserRepository _userRepository;
 
-        public UserQuery(IUserService userService)
+        public UserQuery(IUserRepository userRepository)
         {
-            _userService = userService;
+            _userRepository = userRepository;
         }
 
-        public  async Task<UserDto> GetUser(Guid id)
+        public async Task<User> GetUser(Guid id)
         {
-            return await _userService.GetUserById(id);
+            return await _userRepository.GetUserById(id);
         }
 
         public async Task<IEnumerable<UserDto>> GetUsers()
         {
-            return await _userService.GetUsers();
+            IEnumerable<User> users = await _userRepository.GetUsers();
+            return users.Select(x =>
+                new UserDto()
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Email = x.Email
+                }
+            );
         }
     }
 }

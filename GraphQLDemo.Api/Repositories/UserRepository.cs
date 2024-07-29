@@ -9,35 +9,32 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GraphQLDemo.Api.Repositories
 {
+    // UserRepository
     public class UserRepository : IUserRepository
     {
-        private readonly DbSet<User> _user;
-        private readonly DbSet<Contract> _contract;
-        private readonly AppDbContext _dbContext;
         private readonly IDbContextFactory<AppDbContext> _dbContextFactory;
-
         public UserRepository(IDbContextFactory<AppDbContext> dbContextFactory)
         {
             _dbContextFactory = dbContextFactory;
-            _dbContext = _dbContextFactory.CreateDbContext();
-            _user = _dbContext.Set<User>();
-            _contract = _dbContext.Set<Contract>();
         }
 
         public async Task<bool> AddUser(string name, string email)
         {
-            await _user.AddAsync(new User
+            using var dbContext = _dbContextFactory.CreateDbContext();
+            await dbContext.Users.AddAsync(new User
             {
                 Id = Guid.NewGuid(),
                 Name = name,
                 Email = email
             });
-            return await _dbContext.SaveChangesAsync() > 0;
+            return await dbContext.SaveChangesAsync() > 0;
         }
 
         public async Task<User> GetUserById(Guid id)
         {
-            var user = await _user.FindAsync(id);
+            using var dbContext = _dbContextFactory.CreateDbContext();
+
+            var user = await dbContext.Users.FindAsync(id);
             if (user == null)
             {
                 throw new KeyNotFoundException($"User with ID {id} was not found.");
@@ -47,13 +44,10 @@ namespace GraphQLDemo.Api.Repositories
 
         public async Task<IEnumerable<User>> GetUsers()
         {
-            return await _user.ToListAsync();
+            using var dbContext = _dbContextFactory.CreateDbContext();
+            return await dbContext.Users.Include(x => x.Contracts).ToListAsync();
         }
 
-        public async Task<IEnumerable<Contract>> GetContractsByUserId(Guid userId)
-        {
-            return await _contract.Where(c => c.UserId == userId).ToListAsync();
-        }
     }
 
 }

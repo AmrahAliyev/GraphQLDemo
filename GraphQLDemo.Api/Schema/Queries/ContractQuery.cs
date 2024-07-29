@@ -1,23 +1,23 @@
-﻿using GraphQLDemo.Api.Model.DTOs;
+﻿using GraphQLDemo.Api.Model.Entities;
 
 namespace GraphQLDemo.Api;
 
 public class ContractQuery
 {
-         private readonly IContractService _contractService;
+         private readonly IContractRepository _contractRepository;
 
-        public ContractQuery(IContractService userService)
+        public ContractQuery(IContractRepository userService)
         {
-            _contractService = userService;
+            _contractRepository = userService;
         }
 
-        public  async Task<ContractDto> GetContract(Guid id)
+        public  async Task<Contract> GetContract(Guid id)
         {
-            return await _contractService.GetContractById(id);
+            return await _contractRepository.GetContractById(id);
         }
 
-        public async Task<IEnumerable<ContractDto>> GetContracts()
+        public async Task<IEnumerable<Contract>> GetContracts()
         {
-            return await _contractService.GetContract();
+            return await _contractRepository.GetContracts();
         }
 }

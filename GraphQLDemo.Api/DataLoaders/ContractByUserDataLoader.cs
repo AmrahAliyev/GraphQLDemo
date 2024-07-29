@@ -5,6 +5,7 @@ using GraphQLDemo.Api.Model.Entities;
 using GreenDonut;
 using Microsoft.EntityFrameworkCore;
 
+// DataLoader
 public class ContractByUserDataLoader : BatchDataLoader<Guid, List<Contract>>
 {
     private readonly IDbContextFactory<AppDbContext> _dbContextFactory;

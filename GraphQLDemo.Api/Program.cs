@@ -6,19 +6,18 @@ using GraphQLDemo.Api.Repositories.Interfaces;
 using GraphQLDemo.Api.Schema.Mutations;
 using GraphQLDemo.Api.Schema.Queries;
 using GraphQLDemo.Api.Schema.Types;
-using GraphQLDemo.Api.Services;
-using GraphQLDemo.Api.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddPooledDbContextFactory<AppDbContext>(options => options.UseSqlServer(connectionString));
+
 builder.Services.AddGraphQLServer()
        .AddQueryType<Query>()
        .AddMutationType<Mutation>()
        .AddType<UserType>()
-       // .AddType<ContractType>()
+       .AddType<ContractType>()
        .AddType<UserQuery>()
        .AddType<ContractQuery>()
        .AddType<UserMutation>()
@@ -32,14 +31,9 @@ builder.Services.AddScoped<ContractQuery>();
 builder.Services.AddScoped<ContractMutation>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IContractRepository, ContractRepository>();
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IContractService, ContractService>();
-
-
+builder.Services.AddControllers();
 
 var app = builder.Build();
-
-
 
 app.UseHttpsRedirection();
 app.MapGraphQL();

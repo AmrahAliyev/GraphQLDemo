@@ -2,14 +2,14 @@
 
 public class ContractMutation
 {
-    private readonly IContractService _contractService;
+    private readonly IContractRepository _contractRepository;
 
-    public ContractMutation(IContractService cotractService)
+    public ContractMutation(IContractRepository cotractService)
     {
-        _contractService = cotractService;
+        _contractRepository = cotractService;
     }
     public async Task<bool> AddContract(string contractNumber, Guid userId)
     {
-        return await _contractService.AddContract(contractNumber, userId);
+        return await _contractRepository.AddContract(contractNumber, userId);
     }
 }

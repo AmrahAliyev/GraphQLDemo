@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GraphQLDemo.Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240728174738_init")]
+    [Migration("20240729104742_init")]
     partial class init
     {
         /// <inheritdoc />

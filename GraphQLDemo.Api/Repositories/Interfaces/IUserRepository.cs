@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using GraphQLDemo.Api.Model.DTOs;
 using GraphQLDemo.Api.Model.Entities;
 
 namespace GraphQLDemo.Api.Repositories.Interfaces
@@ -12,6 +11,5 @@ namespace GraphQLDemo.Api.Repositories.Interfaces
         Task<bool> AddUser(string name, string email);
         Task<User> GetUserById(Guid id);
         Task<IEnumerable<User>> GetUsers();
-         Task<IEnumerable<Contract>> GetContractsByUserId(Guid userId);
     }
 }

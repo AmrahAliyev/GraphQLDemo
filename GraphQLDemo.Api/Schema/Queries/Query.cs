@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GraphQLDemo.Api.Model.DTOs;
+using GraphQLDemo.Api.Model.Entities;
 
 namespace GraphQLDemo.Api.Schema.Queries
 {
@@ -17,7 +18,7 @@ namespace GraphQLDemo.Api.Schema.Queries
             _contractQuery = contractQuery;
         }
 
-        public async Task<UserDto> GetUser(Guid id)
+        public async Task<User> GetUser(Guid id)
         {
             return await _userQuery.GetUser(id);
         }
@@ -28,12 +29,12 @@ namespace GraphQLDemo.Api.Schema.Queries
         }
 
 
-        public async Task<ContractDto> GetContract(Guid id)
+        public async Task<Contract> GetContract(Guid id)
         {
             return await _contractQuery.GetContract(id);
         }
 
-        public async Task<IEnumerable<ContractDto>> GetContracts()
+        public async Task<IEnumerable<Contract>> GetContracts()
         {
             return await _contractQuery.GetContracts();
         }

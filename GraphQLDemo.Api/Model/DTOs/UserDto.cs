@@ -10,6 +10,14 @@ namespace GraphQLDemo.Api.Model.DTOs
         public Guid Id { get; set; }
         public string Name { get; set; } = null!;
         public string Email { get; set; } = null!;
-        public IEnumerable<ContractDto>? Contracts { get; set; } 
+        public async Task<IEnumerable<ContractDto>> Contracts(IContractRepository contractRepository)
+        {
+            var contracts = await contractRepository.GetContractByUserId(Id);
+            return contracts.Select(x => new ContractDto()
+            {
+                Id = x.Id,
+                ContractNumber = x.ContractNumber,
+            });
+        }
     }
 }
