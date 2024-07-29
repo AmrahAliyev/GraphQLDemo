@@ -12,27 +12,27 @@ namespace GraphQLDemo.Api.Repositories
     public class UserRepository : IUserRepository
     {
         private readonly DbSet<User> _user;
+        private readonly DbSet<Contract> _contract;
         private readonly AppDbContext _dbContext;
         private readonly IDbContextFactory<AppDbContext> _dbContextFactory;
 
         public UserRepository(IDbContextFactory<AppDbContext> dbContextFactory)
         {
-
             _dbContextFactory = dbContextFactory;
             _dbContext = _dbContextFactory.CreateDbContext();
             _user = _dbContext.Set<User>();
+            _contract = _dbContext.Set<Contract>();
         }
-
 
         public async Task<bool> AddUser(string name, string email)
         {
-            await _user.AddAsync(new User()
+            await _user.AddAsync(new User
             {
                 Id = Guid.NewGuid(),
                 Name = name,
                 Email = email
             });
-            return await _dbContext.SaveChangesAsync() > 0; // Ensure to use SaveChangesAsync
+            return await _dbContext.SaveChangesAsync() > 0;
         }
 
         public async Task<User> GetUserById(Guid id)
@@ -47,8 +47,13 @@ namespace GraphQLDemo.Api.Repositories
 
         public async Task<IEnumerable<User>> GetUsers()
         {
-            var result = await _user.ToListAsync();
-            return result;
+            return await _user.ToListAsync();
+        }
+
+        public async Task<IEnumerable<Contract>> GetContractsByUserId(Guid userId)
+        {
+            return await _contract.Where(c => c.UserId == userId).ToListAsync();
         }
     }
+
 }

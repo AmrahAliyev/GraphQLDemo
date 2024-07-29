@@ -5,6 +5,7 @@ using GraphQLDemo.Api.Repositories;
 using GraphQLDemo.Api.Repositories.Interfaces;
 using GraphQLDemo.Api.Schema.Mutations;
 using GraphQLDemo.Api.Schema.Queries;
+using GraphQLDemo.Api.Schema.Types;
 using GraphQLDemo.Api.Services;
 using GraphQLDemo.Api.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -13,20 +14,24 @@ var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddPooledDbContextFactory<AppDbContext>(options => options.UseSqlServer(connectionString));
-
-builder.Services
-.AddScoped<IUserRepository, UserRepository>()
-.AddScoped<IContractRepository, ContractRepository>()
-.AddGraphQLServer()
-.AddQueryType<Query>()
-.AddMutationType<Mutation>()
-;
+builder.Services.AddGraphQLServer()
+       .AddQueryType<Query>()
+       .AddMutationType<Mutation>()
+       .AddType<UserType>()
+       // .AddType<ContractType>()
+       .AddType<UserQuery>()
+       .AddType<ContractQuery>()
+       .AddType<UserMutation>()
+       .AddType<ContractMutation>()
+       .AddDataLoader<ContractByUserDataLoader>();
 
 builder.Services.AddScoped<UserQuery>();
 builder.Services.AddScoped<UserMutation>();
 
 builder.Services.AddScoped<ContractQuery>();
 builder.Services.AddScoped<ContractMutation>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IContractRepository, ContractRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IContractService, ContractService>();
 

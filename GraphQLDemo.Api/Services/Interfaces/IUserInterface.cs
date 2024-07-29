@@ -11,5 +11,6 @@ namespace GraphQLDemo.Api.Services.Interfaces
         Task<bool> AddUser(string name, string email);
         Task<UserDto> GetUserById(Guid id);
         Task<IEnumerable<UserDto>> GetUsers();
+         Task<IEnumerable<ContractDto>> GetContractsByUserId(Guid userId);
     }
 }
