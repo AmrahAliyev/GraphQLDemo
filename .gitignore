@@ -4,3 +4,4 @@ obj/
 
 # Visual Studio'nun yerel ayarlarını ignore et
 .vscode/
+.DS_Store
