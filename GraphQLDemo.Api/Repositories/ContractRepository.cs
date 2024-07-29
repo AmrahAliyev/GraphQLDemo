@@ -13,16 +13,10 @@ public class ContractRepository : IContractRepository
         _dbContextFactory = dbContextFactory;
     }
 
-    public async Task<bool> AddContract(string contractNumber, Guid userId)
+    public async Task<bool> AddContract(Contract contract)
     {
         using var dbContext = _dbContextFactory.CreateDbContext();
-        await dbContext.Contracts.AddAsync(new Contract()
-        {
-            Id = Guid.NewGuid(),
-            ContractNumber = contractNumber,
-            UserId = userId
-
-        });
+        await dbContext.Contracts.AddAsync(contract);
         return await dbContext.SaveChangesAsync() > 0; // Ensure to use SaveChangesAsync
     }
 

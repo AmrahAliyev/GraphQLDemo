@@ -1,4 +1,7 @@
-﻿namespace GraphQLDemo.Api;
+﻿using GraphQLDemo.Api.Model.Entities;
+using HotChocolate.Subscriptions;
+
+namespace GraphQLDemo.Api;
 
 public class ContractMutation
 {
@@ -8,8 +11,15 @@ public class ContractMutation
     {
         _contractRepository = cotractService;
     }
-    public async Task<bool> AddContract(string contractNumber, Guid userId)
+    public async Task<bool> AddContract(string contractNumber, Guid userId, ITopicEventSender topicEventSender)
     {
-        return await _contractRepository.AddContract(contractNumber, userId);
+        Contract contract = new Contract()
+        {
+            Id = Guid.NewGuid(),
+            ContractNumber = contractNumber,
+            UserId = userId
+        };
+        await topicEventSender.SendAsync(nameof(Subscription.ContractCreated), contract);
+        return await _contractRepository.AddContract(contract);
     }
 }

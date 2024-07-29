@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HotChocolate.Subscriptions;
 
 namespace GraphQLDemo.Api.Schema.Mutations
 {
@@ -19,9 +20,9 @@ namespace GraphQLDemo.Api.Schema.Mutations
         {
             return await _userMutation.AddUser(Name, Email);
         }
-        public async Task<bool> AddContract(string contractNumber, Guid userId)
+        public async Task<bool> AddContract(string contractNumber, Guid userId, [Service] ITopicEventSender topicEventSender)
         {
-            return await _contractMutation.AddContract(contractNumber, userId);
+            return await _contractMutation.AddContract(contractNumber, userId, topicEventSender);
 
         }
     }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using GraphQLDemo.Api.Model.DTOs;
@@ -33,7 +34,7 @@ namespace GraphQLDemo.Api.Schema.Queries
         {
             return await _contractQuery.GetContract(id);
         }
-
+        //[UsePaging]
         public async Task<IEnumerable<Contract>> GetContracts()
         {
             return await _contractQuery.GetContracts();

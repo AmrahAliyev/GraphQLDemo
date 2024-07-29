@@ -22,6 +22,8 @@ builder.Services.AddGraphQLServer()
        .AddType<ContractQuery>()
        .AddType<UserMutation>()
        .AddType<ContractMutation>()
+       .AddSubscriptionType<Subscription>()
+       .AddInMemorySubscriptions() // This adds the in-memory subscription provider
        .AddDataLoader<ContractByUserDataLoader>();
 
 builder.Services.AddScoped<UserQuery>();
@@ -36,6 +38,7 @@ builder.Services.AddControllers();
 var app = builder.Build();
 
 app.UseHttpsRedirection();
+app.UseWebSockets();
 app.MapGraphQL();
 app.Run();
 
