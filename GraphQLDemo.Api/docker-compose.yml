@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: GraphQLDb
+    environment:
+      SA_PASSWORD: "Amrah1997*"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    volumes:
+      - db_volume:/var/opt/mssql
+
+volumes:
+  db_volume:

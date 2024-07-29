@@ -1,0 +1,6 @@
+# Bin ve obj klasörlerini ignore et
+bin/
+obj/
+
+# Visual Studio'nun yerel ayarlarını ignore et
+.vscode/
