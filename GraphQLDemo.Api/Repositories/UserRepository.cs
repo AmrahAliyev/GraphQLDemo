@@ -45,7 +45,7 @@ namespace GraphQLDemo.Api.Repositories
         public async Task<IEnumerable<User>> GetUsers()
         {
             using var dbContext = _dbContextFactory.CreateDbContext();
-            return await dbContext.Users.Include(x => x.Contracts).ToListAsync();
+            return await dbContext.Users.ToListAsync();
         }
 
     }
