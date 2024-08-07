@@ -23,7 +23,8 @@ namespace GraphQLDemo.Api.Schema.Queries
         {
             return await _userQuery.GetUser(id);
         }
-        [Description("Bütün istifadəçiləri gətirir")]
+
+        [GraphQLDescription("Bütün istifadəçiləri gətirir")]
         public async Task<IEnumerable<UserDto>> GetUsers()
         {
             return await _userQuery.GetUsers();
